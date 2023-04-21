@@ -1,0 +1,42 @@
+{
+  "properties": [
+    {
+      "name": "garoupa.jwt.secret",
+      "type": "java.lang.String",
+      "description": "Authentication token used jwt. The secret is jwt sign secret. Do not leak it.",
+      "defaultValue": "Garoupa2023"
+    },
+    {
+      "name": "spring.redis.redisson.config",
+      "type": "java.lang.String",
+      "description": "Redisson config user yaml."
+    },
+    {
+      "name": "garoupa.authorize.permit-all-uri",
+      "type": "java.lang.String",
+      "description": "Service uri permit all user."
+    },
+    {
+      "name": "garoupa.authorize.anonymous-uri",
+      "type": "java.lang.String",
+      "description": "Service uri only permit anonymous user."
+    },
+    {
+      "name": "garoupa.authorize.deny-all-uri",
+      "type": "java.lang.String",
+      "description": "Service uri deny all user."
+    },
+    {
+      "name": "garoupa.authentication.login-uri",
+      "type": "java.lang.String",
+      "description": "Garoupa login uri.",
+      "defaultValue": "/garoupa/login"
+    },
+    {
+      "name": "garoupa.authentication.logout-uri",
+      "type": "java.lang.String",
+      "description": "Garoupa logout uri.",
+      "defaultValue": "/garoupa/logout"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+/**
+ * Copyright 2023 telechow
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.github.telechow.garoupa.web.auto.service;
+
+import io.github.telechow.garoupa.api.entity.SystemParamCategory;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+/**
+ * <p>
+ * 系统参数分类表 服务类
+ * </p>
+ *
+ * @author telechow
+ * @since 2023-04-06
+ */
+public interface ISystemParamCategoryAutoService extends IService<SystemParamCategory> {
+
+    /**
+     * 根据 系统参数分类id 查询 系统参数分类实体，并写入缓存
+     *
+     * @param id 系统参数分类id
+     * @return io.github.telechow.garoupa.api.entity.SystemParamCategory 系统参数分类实体
+     * @author Telechow
+     * @since 2023/4/7 23:32
+     */
+    SystemParamCategory getByIdPutCache(Long id);
+}

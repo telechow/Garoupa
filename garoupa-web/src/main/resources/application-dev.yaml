@@ -1,0 +1,175 @@
+server:
+  port: 8080
+
+spring:
+  #数据源
+  datasource:
+    url: jdbc:mysql://ip:port/garoupa?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: your_username
+    password: your_password
+  #redis
+  data:
+    redis:
+      host: ip
+      port: 6379
+      database: 0
+      password: your_password
+  redis:
+    redisson:
+      config: |
+        singleServerConfig:
+          address: "redis://ip:port"
+          password: your_password
+          database: 0
+          idleConnectionTimeout: 10000
+          connectTimeout: 10000
+          timeout: 3000
+          retryAttempts: 3
+          retryInterval: 1500
+          subscriptionsPerConnection: 5
+          clientName: null
+          subscriptionConnectionMinimumIdleSize: 1
+          subscriptionConnectionPoolSize: 50
+          connectionMinimumIdleSize: 24
+          connectionPoolSize: 64
+          dnsMonitoringInterval: 5000
+        threads: 16
+        nettyThreads: 32
+        codec: !<org.redisson.codec.Kryo5Codec> {}
+        transportMode: "NIO"
+  #邮箱配置
+  mail:
+    host: smtp.qq.com #发送邮件服务器
+    username: your_email #邮箱地址
+    password: your_password #客户端授权码
+    protocol: smtp #发送邮件协议
+    default-encoding: utf-8
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  group-configs:
+    - group: 'Garoupa'
+      paths-to-match: '/**'
+      packages-to-scan: io.github.telechow.garoupa
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-dynamic-parameter: true
+
+#Mybatis-plus配置
+mybatis-plus:
+  global-config:
+    #关闭banner
+    banner: false
+    db-config:
+      #解决逻辑删除与唯一性校验的冲突问题，使用被删除的数据id填充逻辑删除字段，以唯一字段+逻辑删除字段作为组合唯一键
+      logic-delete-value: "id"
+      logic-not-delete-value: 0
+
+#cosid配置
+cosid:
+  namespace: Garoupa
+  #使用号段模式，默认链式
+  segment:
+    enabled: true
+    #号段分发器使用jdbc，将号段信息存储在数据库中，cosid号段信息即使在数据库中性能和存在redis中几乎无差别且极高
+    distributor:
+      type: jdbc
+    share:
+      #起始id偏移量，配置1000则id从1001开始
+      offset: 1000
+      #号段步长，每次取号段，号段中的id数量。java服务停服，取到的号段中未使用的id将会被废弃，所以要配置一个合适的步长
+      step: 100
+    #自定义的号段生产者，我们使用实体名作为号段链生产者的名字
+    provider:
+      User:
+        offset: 10000
+        step: 1
+      Role:
+        offset: 10000
+        step: 1
+      UserRoleRelation:
+        offset: 10000
+        step: 1
+      Resource:
+        offset: 10000
+        step: 1
+      RoleResourceRelation:
+        offset: 10000
+        step: 1
+      Permission:
+        offset: 10000
+        step: 1
+      RolePermissionRelation:
+        offset: 10000
+        step: 1
+      SystemParamCategory:
+        offset: 10000
+        step: 1
+      SystemParam:
+        offset: 10000
+        step: 1
+      SystemDict:
+        offset: 10000
+        step: 1
+      SystemDictItem:
+        offset: 10000
+        step: 1
+      LoginLog:
+        offset: 10000
+        step: 1
+      AuditLog:
+        offset: 10000
+        step: 1
+
+#Garoupa配置
+garoupa:
+  #jwt配置
+  jwt:
+    secret: Garoupa2023
+  #认证配置
+  authentication:
+    login-uri: /garoupa/login
+    logout-uri: /garoupa/logout
+  #跨域配置
+  cors:
+    allow-headers:
+      - "*"
+    allow-methods:
+      - "*"
+    allow-origins:
+      - "*"
+    allow-credentials: true
+    max-age: 1h
+  #鉴权配置
+  authorize:
+    #可以随意访问的接口uri列表
+    permit-all-uri:
+      #获取一个图片验证码
+      - /m/captcha/get
+      #获取一个邮件验证码
+      - /m/captcha/get/email/code
+      #Knife4j和OpenApi相关接口
+      - /v3/api-docs/**
+      - /swagger-resources/**
+      - /swagger-ui/**
+      - /doc.html
+      - /webjars/**
+      - /img.icons/**
+      - /favicon.ico
+    #只允许匿名用户访问的接口uri
+    anonymous-uri:
+      #认证接口
+      - /garoupa/login
+    #禁止访问的接口uri
+    deny-all-uri: []

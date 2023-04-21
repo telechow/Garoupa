@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright 2023 telechow
+ ~ <p>
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~ <p>
+ ~ http://www.apache.org/licenses/LICENSE-2.0
+ ~ <p>
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.github.telechow</groupId>
+    <artifactId>Garoupa</artifactId>
+    <version>1.0.0</version>
+	<packaging>pom</packaging>
+
+    <name>Garoupa</name>
+    <description>Garoupa</description>
+	<modules>
+		<module>garoupa-web</module>
+		<module>garoupa-config</module>
+        <module>garoupa-generate</module>
+		<module>garoupa-api</module>
+	</modules>
+
+	<properties>
+        <java.version>17</java.version>
+		<spring-boot.version>3.0.5</spring-boot.version>
+
+		<!--Hutool-->
+		<hutool.version>5.8.18</hutool.version>
+
+		<!--maven build plugins-->
+		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!--fastjson2-->
+		<fastjson2.version>2.0.28</fastjson2.version>
+
+		<!--mybatis-plus-->
+		<mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+		<mybatis-plus-generator.version>3.5.3.1</mybatis-plus-generator.version>
+
+		<!--database-driver-->
+		<mysql.version>8.0.32</mysql.version>
+
+		<!--cosid-->
+		<cosid.version>2.0.5</cosid.version>
+
+		<!--knife4j-->
+		<knife4j.version>4.1.0</knife4j.version>
+
+		<!--redisson-->
+		<redisson.version>3.20.1</redisson.version>
+
+		<!--lock4j-->
+		<lock4j.version>2.2.4</lock4j.version>
+    </properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!--SpringBoot-->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!--Hutool-->
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-bom</artifactId>
+				<version>${hutool.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!--web-->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+				<exclusions>
+					<!--排除tomcat依赖，使用undertow-->
+					<exclusion>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+						<groupId>org.springframework.boot</groupId>
+					</exclusion>
+					<!-- 排除Jackson依赖，使用fastjson2 -->
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-json</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!--fastjson2-->
+			<dependency>
+				<groupId>com.alibaba.fastjson2</groupId>
+				<artifactId>fastjson2-extension-spring6</artifactId>
+				<version>${fastjson2.version}</version>
+			</dependency>
+
+			<!--mybatis-plus-->
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-generator</artifactId>
+				<version>${mybatis-plus-generator.version}</version>
+			</dependency>
+
+			<!--database-driver-->
+			<!--mysql driver-->
+			<dependency>
+				<groupId>com.mysql</groupId>
+				<artifactId>mysql-connector-j</artifactId>
+				<version>${mysql.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<!--cosid-->
+			<dependency>
+				<groupId>me.ahoo.cosid</groupId>
+				<artifactId>cosid-spring-boot-starter</artifactId>
+				<version>${cosid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>me.ahoo.cosid</groupId>
+				<artifactId>cosid-jdbc</artifactId>
+				<version>${cosid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>me.ahoo.cosid</groupId>
+				<artifactId>cosid-mybatis</artifactId>
+				<version>${cosid.version}</version>
+			</dependency>
+
+			<!--接口文档-->
+			<dependency>
+				<groupId>com.github.xiaoymin</groupId>
+				<artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+				<version>${knife4j.version}</version>
+			</dependency>
+
+			<!--redisson-->
+			<dependency>
+				<groupId>org.redisson</groupId>
+				<artifactId>redisson-spring-boot-starter</artifactId>
+				<version>${redisson.version}</version>
+			</dependency>
+
+			<!--lock4j-->
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>lock4j-redisson-spring-boot-starter</artifactId>
+				<version>${lock4j.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+    <dependencies>
+		<!--配置文件处理器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--测试-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+	</dependencies>
+
+	<build>
+		<!-- mvn clean source:jar javadoc:jar deploy -DskipTests -->
+		<plugins>
+			<!-- mvn clean deploy -DskipTests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<!--解决警告Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: 类全限定名-->
+				<configuration>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+
+			<!-- mvn clean source:jar deploy -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+			</plugin>
+
+			<!-- mvn clean javadoc:jar deploy -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<charset>UTF-8</charset>
+					<docencoding>UTF-8</docencoding>
+				</configuration>
+			</plugin>
+
+			<!-- 安装：https://www.gpg4win.org/thanks-for-download.html -->
+			<!--
+				1、新建密钥对
+				2、生成密钥对副本
+				3、上传公钥至目录服务器（手动上传（需要验证邮箱）：https://keys.openpgp.org/upload/）
+			 -->
+			<!--
+				单个文件签名：
+				gpg &#45;&#45;armor &#45;&#45;detach-sign 文件名
+			 -->
+			<!--<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven-gpg-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>-->
+		</plugins>
+	</build>
+
+</project>

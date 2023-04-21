@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright 2023 telechow
+ ~ <p>
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~ <p>
+ ~ http://www.apache.org/licenses/LICENSE-2.0
+ ~ <p>
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.telechow.garoupa.web.mapper.ResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="io.github.telechow.garoupa.api.entity.Resource">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="resource_type" property="resourceType" />
+        <result column="resource_code" property="resourceCode" />
+        <result column="resource_name" property="resourceName" />
+        <result column="icon" property="icon" />
+        <result column="route" property="route" />
+        <result column="sort_number" property="sortNumber" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted_tag" property="deletedTag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent_id, resource_type, resource_code, resource_name, icon, route, sort_number, create_user, create_time, update_user, update_time, deleted_tag
+    </sql>
+
+    <!--根据用户id查询资源实体列表-->
+    <select id="listResourceByUserId" resultType="io.github.telechow.garoupa.api.entity.Resource">
+        select r.id,
+               r.parent_id,
+               r.resource_type,
+               r.resource_code,
+               r.resource_name,
+               r.icon,
+               r.route,
+               r.sort_number,
+               r.create_user,
+               r.create_time,
+               r.update_user,
+               r.update_time,
+               r.deleted_tag
+        from garoupa_resource r
+                 inner join garoupa_role_resource_relation rrr on r.id = rrr.resource_id
+                 inner join garoupa_user_role_relation urr on rrr.role_id = urr.role_id
+        where urr.user_id = #{userId}
+          and r.deleted_tag = 0
+    </select>
+
+</mapper>
